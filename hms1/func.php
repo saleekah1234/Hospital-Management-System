@@ -10,10 +10,108 @@ $count=mysqli_num_rows($result);
 
 if($count==1)
     {
-    header("Location:admin.php");
+    header("Location:admin-panel.php");
     }
     else{
-        header("Location:index.php");
+        echo"<script>alert('Invalid Credentials');</script>";
+      
+      
     }
 }
+if(isset($_POST['pat_submit']))
+{
+    $fname=$_POST['fname'];
+    $lname=$_POST['lname'];
+    $email=$_POST['email'];
+    $contact=$_POST['contact'];
+    $docapp=$_POST['docapp'];
+
+    $query="insert into docappoint(fname,lname,email,contact,docapp) values('$fname','$lname','$email','$contact','$docapp')";
+    $result=mysqli_query($con,$query);
+    echo $result;
+    if($result)
+    {
+        echo"<script>alert('Submittted');</script>";
+        echo "<script>window.open('admin-panel.php','_self')</script>";
+    }
+}
+
+function get_patient_details(){
+    global $con;
+    $query="select * from docappoint";
+    $result=mysqli_query($con,$query);
+    while($row=mysqli_fetch_array($result)){
+        $fname=$row['fname'];
+        $lname=$row['lname'];
+        $email=$row['email'];
+        $contact=$row['contact'];
+        $docapp=$row['docapp'];  
+        echo"
+        <tr>
+        <td>$fname</td>
+        <td>$lname</td>
+        <td>$email</td>
+        <td>$contact</td>
+        <td>$docapp</td>
+        </tr>";
+
+    }
+}
+
+
+if(isset($_POST['staff_submit']))
+{   
+    $s_fname=$_POST['s_fname'];
+    $s_lname=$_POST['s_lname'];
+    $s_email=$_POST['s_email'];
+    $s_contact=$_POST['s_contact'];
+    $s_post=$_POST['s_post'];
+    $query="insert into staff(fname,lname,email,contact,post) values('$s_fname','$s_lname','$s_email','$s_contact','$s_post')";
+    $result=mysqli_query($con,$query);
+    echo $result;
+    if($result)
+    {
+        echo "<script> alert('Staff details registered');</script>";
+        echo" <script> window.open('addstaff.php','_self')</script>"; 
+    }
+}
+function get_staff_details()
+{
+    global $con;
+    $query="select * from staff";
+    $result=mysqli_query($con,$query);
+    while($row=mysqli_fetch_array($result))
+    {
+        $fname=$row['fname'];
+        $lname=$row['lname'];
+        $email=$row['email'];
+        $contact=$row['contact'];
+        $post=$row['post'];  
+        echo"
+        <tr>
+        <td>$fname</td>
+        <td>$lname</td>
+        <td>$email</td>
+        <td>$contact</td>
+        <td>$post</td>
+        </tr>";
+
+    }
+}
+if(isset($_POST['remove']))
+{  
+    $name=$_POST['remove_name'];
+    $query="delete from staff where fname='$name'";
+    $result=mysqli_query($con,$query);
+
+    if ($result )
+    {
+        echo "<script> alert('Staff removed');</script>";
+        echo" <script> window.open('remove_staff.php','_self')</script>"; 
+    }
+        
+}   
+
+?>
+
 ?>
